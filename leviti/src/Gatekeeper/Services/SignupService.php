@@ -22,6 +22,7 @@ class SignupService
             $user->cpf = $userData["cpf"];
             $user->cellphone = $userData["cellphone"];
             $user->email = $userData["email"];
+            $user->status = 1;
             
             $user->save();
             return true;

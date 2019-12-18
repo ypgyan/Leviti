@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Gatekeeper\Controllers;
+namespace Src\Users\Controllers;
 
 use App\Http\Controllers\Controller;
 
-class IndexController extends Controller
+class UsersController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -17,13 +17,16 @@ class IndexController extends Controller
     }
 
     /**
-     * Index de persons
+     * Index de Users
+     * 
+     * @param void
+     * @return Json
      */
     public function index()
     {
         $response = [
             "status" => "Success",
-            "message" => "Welcome to Levíti API"
+            "message" => "This is the Users section of Levíti API and it's working ^^"
         ];
         return response()->json($response);
     }

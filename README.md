@@ -1,4 +1,4 @@
-# Leviti-API
+# Levíti-API
 
 Projeto para gerência de membresia em igrejas.
 

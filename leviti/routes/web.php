@@ -15,11 +15,15 @@ $router->group(['namespace' => '\Rap2hpoutre\LaravelLogViewer'], function () use
     $router->get('logs', ['uses' => 'LogViewerController@index', 'name' => 'logs']);
 });
 
-$router->group(['prefix' => 'api', 'middleware' => ['auth', 'watchman']], function () use ($router) {
-    $router->get('/', ['uses' => '\Src\Gatekeeper\Controllers\IndexController@index', 'name' => 'api.index']);
-});
-
 $router->group(['prefix' => 'register', 'middleware' => ['watchman']], function () use ($router) {
     $router->get('/', ['uses' => '\Src\Gatekeeper\Controllers\SignupController@index', 'name' => 'signup.index']);
     $router->post('/signup', ['uses' => '\Src\Gatekeeper\Controllers\SignupController@signup', 'name' => 'signup.register']);
+});
+
+$router->group(['prefix' => 'api', 'middleware' => ['auth', 'watchman']], function () use ($router) {
+    $router->get('/', ['uses' => '\Src\Gatekeeper\Controllers\IndexController@index', 'name' => 'api.index']);
+
+    $router->group(['prefix' => 'users', 'middleware' => ['watchman']], function () use ($router) {
+        $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@index', 'name' => 'users.index']);
+    });
 });
