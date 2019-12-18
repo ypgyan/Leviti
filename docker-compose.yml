@@ -1,0 +1,48 @@
+version: '3'
+services:
+
+  #PHP Service
+  levit-api:
+    build: .docker/php
+    container_name: leviti-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+#      XDEBUG_CONFIG: "remote_host=172.17.0.1 remote_enable=1"
+      SERVICE_NAME: leviti-api
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./leviti:/var/www
+      - .docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - leviti-network
+
+  #MySQL Service
+  db-leviti:
+    image: mysql:5.7.22
+    container_name: db-leviti
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: leviti
+      MYSQL_ROOT_PASSWORD: 613984
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - leviti-network
+
+#Docker Networks
+networks:
+  leviti-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local
