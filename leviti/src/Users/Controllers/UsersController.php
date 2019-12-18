@@ -67,11 +67,11 @@ class UsersController extends Controller
                 $this->usersService->insert($data);
                 $this->response["status"] = "success";
                 $this->response["message"] = "User inserted succesfully";
+                Log::info('New user created by: ' . $request->header('api_token'));
             }else{
                 $this->response["status"] = "error";
                 $this->response["message"] = $validate["message"];
             }
-
             return response()->json($this->response);
         } catch (\Exception $e) {
             Log::critical('Users store Error: ' . $e->getMessage());

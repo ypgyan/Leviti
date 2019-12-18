@@ -20,10 +20,10 @@ $router->group(['prefix' => 'register', 'middleware' => ['watchman']], function 
     $router->post('/signup', ['uses' => '\Src\Gatekeeper\Controllers\SignupController@signup', 'name' => 'signup.register']);
 });
 
-$router->group(['prefix' => 'api', 'middleware' => ['auth', 'watchman']], function () use ($router) {
+$router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', ['uses' => '\Src\Gatekeeper\Controllers\IndexController@index', 'name' => 'api.index']);
 
-    $router->group(['prefix' => 'users', 'middleware' => ['watchman']], function () use ($router) {
+    $router->group(['prefix' => 'users'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@index', 'name' => 'users.index']);
         $router->post('/store', ['uses' => '\Src\Users\Controllers\UsersController@store', 'name' => 'users.store']);
     });
