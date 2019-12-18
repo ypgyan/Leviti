@@ -25,5 +25,6 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth', 'watchman']], functi
 
     $router->group(['prefix' => 'users', 'middleware' => ['watchman']], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@index', 'name' => 'users.index']);
+        $router->post('/store', ['uses' => '\Src\Users\Controllers\UsersController@store', 'name' => 'users.store']);
     });
 });
