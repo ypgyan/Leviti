@@ -82,4 +82,22 @@ class UsersController extends Controller
             return response()->json($this->response);
         }
     }
+
+    /**
+     * Retorna todo os usuários
+     */
+    public function users()
+    {
+        try {
+            $users = $this->usersService->getUsers();
+            $this->response["users"] = $users;
+            $this->response["message"] = "Usuários retornados com sucesso";
+            $this->response["status"] = "success";
+        } catch (\Exception $e) {
+            Log::critical('Users store Error: ' . $e->getMessage());
+            $this->response["message"] = "Alguma coisa deu errado ao tentar buscar o usuário";
+            $this->response["status"] = "error";
+        }
+        return response()->json($this->response);
+    }
 }

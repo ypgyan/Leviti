@@ -3,6 +3,7 @@
 namespace Src\Users\Services;
 
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Respect\Validation\Validator as v;
 
 class UsersService 
@@ -100,5 +101,30 @@ class UsersService
         $user->status = $userData["status"];
 
         $user->save();
+    }
+
+    /**
+     * Retorna todos os users
+     * @param void
+     * @return Array
+     */
+    public function getUsers()
+    {
+        $users = DB::select("
+            SELECT 
+                id,
+                name,
+                last_name,
+                CONCAT(name,' ', last_name) AS full_name,
+                cpf,
+                cellphone,
+                email,
+                type,
+                active,
+                status
+            FROM users
+        ");
+
+        return $users;
     }
 }
