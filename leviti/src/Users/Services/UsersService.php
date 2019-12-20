@@ -112,17 +112,17 @@ class UsersService
     {
         $users = DB::select("
             SELECT 
-                id,
-                name,
-                last_name,
-                CONCAT(name,' ', last_name) AS full_name,
-                cpf,
-                cellphone,
-                email,
-                type,
-                active,
-                status
-            FROM users
+                U.id,
+                U.name,
+                U.last_name,
+                CONCAT(U.name,' ', U.last_name) AS full_name,
+                U.cpf,
+                U.cellphone,
+                U.email,
+                U.type,
+                U.active,
+                U.status
+            FROM users U
         ");
 
         return $users;
