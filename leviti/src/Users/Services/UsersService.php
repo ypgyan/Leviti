@@ -121,7 +121,9 @@ class UsersService
                 U.email,
                 U.type,
                 U.active,
-                U.status
+                U.status,
+                U.created_at,
+                U.updated_at
             FROM users U
         ");
 
