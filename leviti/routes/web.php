@@ -25,6 +25,7 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
 
     $router->group(['prefix' => 'users'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@index', 'name' => 'users.index']);
+        $router->get('/get', ['uses' => '\Src\Users\Controllers\UsersController@users', 'name' => 'users.get']);
         $router->post('/store', ['uses' => '\Src\Users\Controllers\UsersController@store', 'name' => 'users.store']);
     });
 });
