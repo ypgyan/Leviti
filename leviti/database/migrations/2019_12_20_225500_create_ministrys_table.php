@@ -19,6 +19,7 @@ class CreateMinistrysTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->date('fundation_date')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users');
