@@ -5,6 +5,7 @@ namespace Src\Users\Controllers;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Src\Users\Services\UsersService;
 
@@ -66,7 +67,7 @@ class UsersController extends Controller
                 $this->usersService->insert($data);
                 $this->response["status"] = "success";
                 $this->response["message"] = "User inserted succesfully";
-                Log::info('New user created by: ' . $request->header('api_token'));
+                Log::info('New user created by: User ' . Auth::user()->id);
             }else{
                 $this->response["status"] = "error";
                 $this->response["message"] = $validate["message"];
@@ -75,7 +76,7 @@ class UsersController extends Controller
         } catch (\Exception $e) {
             Log::critical('Users store Error: ' . $e->getMessage());
 
-            $this->response["message"] = "Alguma coisa deu errado ao tentar salvar o usuário";
+            $this->response["message"] = "Something went wrong";
             $this->response["status"] = "error";
 
             return response()->json($this->response);
