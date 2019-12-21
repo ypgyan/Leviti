@@ -60,8 +60,8 @@ class UsersService
             $this->message["email"] = "Email is not valid";
         }
 
-        if (!v::stringType()->validate($userData["type"])) {
-            $this->message["type"] = "The type field needs to be string";
+        if ((!v::stringType()->validate($userData["type"])) && ($userData["type"] == "ADMIN" || $userData["type"] == "MEMBER")) {
+            $this->message["type"] = "The type field needs to be string and ADMIN or MEMBER";
         }
 
         if (!v::boolVal()->validate($userData["status"])) {
@@ -97,7 +97,7 @@ class UsersService
         $user->cpf = $userData["cpf"];
         $user->cellphone = $userData["cellphone"];
         $user->email = $userData["email"];
-        $user->type = $userData["type"];
+        $user->type = strtoupper($userData["type"]);
         $user->status = $userData["status"];
 
         $user->save();
