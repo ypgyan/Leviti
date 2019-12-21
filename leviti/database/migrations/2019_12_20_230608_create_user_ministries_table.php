@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserMinistrysTable extends Migration
+class CreateUserMinistriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUserMinistrysTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_ministrys', function (Blueprint $table) {
+        Schema::create('user_ministries', function (Blueprint $table) {
             $table->integer('id_user');
             $table->integer('id_ministry');
             $table->boolean('leader');
@@ -23,7 +23,7 @@ class CreateUserMinistrysTable extends Migration
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users');
-            $table->foreign('id_ministry')->references('id')->on('ministrys');
+            $table->foreign('id_ministry')->references('id')->on('ministries');
         });
     }
 
@@ -34,6 +34,6 @@ class CreateUserMinistrysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_ministrys');
+        Schema::dropIfExists('user_ministries');
     }
 }

@@ -33,9 +33,9 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
     /**
      * Rotas para ministérios
      */
-    $router->group(['prefix' => 'ministrys'], function () use ($router) {
-        $router->get('/', ['uses' => '\Src\Users\Controllers\MinistrysController@index', 'name' => 'user.index']);
-        $router->post('/', ['uses' => '\Src\Users\Controllers\MinistrysController@store', 'name' => 'user.store']);
+    $router->group(['prefix' => 'ministries'], function () use ($router) {
+        $router->get('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@index', 'name' => 'user.index']);
+        $router->post('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@store', 'name' => 'user.store']);
     });
 
 });

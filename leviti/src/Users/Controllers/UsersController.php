@@ -57,7 +57,6 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
         try {
             $data = $request->all();
 
