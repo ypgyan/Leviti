@@ -22,9 +22,20 @@ $router->group(['prefix' => 'register', 'middleware' => ['watchman']], function 
 
 $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', ['uses' => '\Src\Gatekeeper\Controllers\IndexController@index', 'name' => 'api.index']);
-
+    /**
+     * Rotas de Users
+     */
     $router->group(['prefix' => 'users'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@users', 'name' => 'user.index']);
         $router->post('/', ['uses' => '\Src\Users\Controllers\UsersController@store', 'name' => 'user.store']);
     });
+
+    /**
+     * Rotas para ministérios
+     */
+    $router->group(['prefix' => 'ministrys'], function () use ($router) {
+        $router->get('/', ['uses' => '\Src\Users\Controllers\MinistrysController@index', 'name' => 'user.index']);
+        $router->post('/', ['uses' => '\Src\Users\Controllers\MinistrysController@store', 'name' => 'user.store']);
+    });
+
 });
