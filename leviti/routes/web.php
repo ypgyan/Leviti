@@ -22,8 +22,9 @@ $router->group(['prefix' => 'register', 'middleware' => ['watchman']], function 
 
 $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', ['uses' => '\Src\Gatekeeper\Controllers\IndexController@index', 'name' => 'api.index']);
+    
     /**
-     * Rotas de Users
+     * Rotas para Usuários
      */
     $router->group(['prefix' => 'users'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@users', 'name' => 'user.index']);
@@ -36,6 +37,14 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
     $router->group(['prefix' => 'ministries'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@index', 'name' => 'user.index']);
         $router->post('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@store', 'name' => 'user.store']);
+    });
+
+    /**
+     * Rotas para células
+     */
+    $router->group(['prefix' => 'cells'], function () use ($router) {
+        $router->get('/', ['uses' => '\Src\Cells\Controllers\CellsController@index', 'name' => 'user.index']);
+        $router->post('/', ['uses' => '\Src\Cells\Controllers\CellsController@store', 'name' => 'user.store']);
     });
 
 });
