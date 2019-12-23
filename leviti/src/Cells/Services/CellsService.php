@@ -34,28 +34,22 @@ class CellsService
     }
 
     /**
-     * Verifica os dados recebidos
-     * 
-     * @param Array $cellData
-     * @return Array[bool,string]
+     * Retorna a célula desejada
+     *
+     * @param void
+     * @return Array
      */
-    public function validate(Array $cellData)
+    public function get($id)
     {
-        if (!v::stringType()->validate($cellData["name"])) {
-            $this->message["name"] = "The name field needs to be string";
-        }
+        $cells = DB::select("
+            SELECT
+                C.*
+            FROM cells C
+            WHERE
+                C.id = ?
+        ",[$id]);
 
-        if (empty($this->message)) {
-            return [
-                "validated" => 1,
-                "message" => $this->message
-            ];
-        }else{
-            return [
-                "validated" => 0,
-                "message" => $this->message
-            ];
-        }
+        return $cells;
     }
 
     /**
@@ -73,5 +67,51 @@ class CellsService
         $cell->description = $cellData["description"];
 
         $cell->save();
+    }
+
+    /**
+     * Atualiza os dados da célula no banco
+     * 
+     * @param Array $cellData
+     * @param int $id_cell
+     * @return void
+     */
+    public function update(Array $cellData, $id_cell)
+    {
+        $cell = Cell::where('id',$id_cell)->first();
+
+        $cell->name = $cellData["name"];
+        $cell->description = $cellData["description"];
+        $cell->description = $cellData["status"];
+
+        $cell->save();
+    }
+
+    /**
+     * Deleta os usuários vinculados a célula
+     * 
+     * @param int $id_cell
+     * @return void
+     */
+    public function deleteCellUsers($id_cell)
+    {
+        DB::delete('
+        DELETE user_cells 
+        WHERE id_cell = ?
+        ', [$id_cell]);
+    }
+
+    /**
+     * Deleta a célula
+     * 
+     * @param int $id_cell
+     * @return void
+     */
+    public function deleteCell($id_cell)
+    {
+        DB::delete('
+        DELETE cells 
+        WHERE id = ?
+        ', [$id_cell]);
     }
 }
