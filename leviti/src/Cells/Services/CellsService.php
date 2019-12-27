@@ -28,6 +28,8 @@ class CellsService
             SELECT
                 C.*
             FROM cells C
+            WHERE
+                status = 1
         ");
 
         return $cells;
@@ -46,7 +48,7 @@ class CellsService
                 C.*
             FROM cells C
             WHERE
-                C.id = ?
+                C.id = ? AND C.status = 1
         ",[$id]);
 
         return $cells;
@@ -82,7 +84,7 @@ class CellsService
 
         $cell->name = $cellData["name"];
         $cell->description = $cellData["description"];
-        $cell->description = $cellData["status"];
+        $cell->status = $cellData["status"];
 
         $cell->save();
     }
@@ -96,8 +98,10 @@ class CellsService
     public function deleteCellUsers($id_cell)
     {
         DB::delete('
-        DELETE user_cells 
-        WHERE id_cell = ?
+        UPDATE user_cells SET
+            status = 0
+        WHERE
+            id_cell = ?
         ', [$id_cell]);
     }
 
@@ -107,10 +111,11 @@ class CellsService
      * @param int $id_cell
      * @return void
      */
-    public function deleteCell($id_cell)
+    public function delete($id_cell)
     {
         DB::delete('
-        DELETE cells 
+        UPDATE cells SET
+            status = 0
         WHERE id = ?
         ', [$id_cell]);
     }

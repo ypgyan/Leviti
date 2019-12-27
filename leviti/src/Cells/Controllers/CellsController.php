@@ -31,21 +31,13 @@ class CellsController extends Controller
     private $cells;
 
     /**
-     * Serviço de validação
-     * 
-     * @var CellsService
-     */
-    private $validate;
-
-    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(CellsService $cellsService, ValidateService $validateService)
+    public function __construct(CellsService $cellsService)
     {
         $this->cells = $cellsService;
-        $this->validate = $validateService;
     }
 
     /**
@@ -78,20 +70,20 @@ class CellsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'name' => 'required|string',
+            'description' => 'string',
+        ]);
+
         try {
             $data = $request->all();
 
             $validate = $this->validate->store($data);
-
-            if($validate["validated"]){
-                $this->cells->insert($data);
-                $this->response["status"] = "success";
-                $this->response["message"] = "Cell inserted succesfully";
-                Log::info('New Cell created by: User ' . Auth::user()->id);
-            }else{
-                $this->response["status"] = "error";
-                $this->response["message"] = $validate["message"];
-            }
+            $this->cells->insert($data);
+            $this->response["status"] = "success";
+            $this->response["message"] = "Cell inserted succesfully";
+            Log::info('New Cell created by: User ' . Auth::user()->id);
+            
             return response()->json($this->response);
         } catch (\Exception $e) {
             Log::critical('Cell store Error: ' . $e->getMessage());
@@ -109,16 +101,16 @@ class CellsController extends Controller
      * @param void
      * @return Json
      */
-    public function show($id_cell)
+    public function show($idCell)
     {
         try {
-            $cells = $this->cells->get($id_cell);
+            $cells = $this->cells->get($idCell);
 
             $this->response["status"] = "success";
             $this->response["message"] = "Succesfully found the cell";
             $this->response["cells"] = $cells;
         } catch (\Exception $e) {
-            Log::error('Something went wrong trying to get the cell: id = '. $id_cell .' error = ' .$e->getMessage());
+            Log::error('Something went wrong trying to get the cell: id = '. $idCell .' error = ' .$e->getMessage());
             $this->response["status"] = "error";
             $this->response["message"] = "Failed to get cell";
         }
@@ -128,25 +120,26 @@ class CellsController extends Controller
     /**
      * Atualiza os dados da célula
      * 
+     * @param int $idCell
      * @param Request $request
      * @return Response
      */
-    public function update(Request $request, $id_cell)
+    public function update(int $idCell, Request $request)
     {
+        $this->validate($request,[
+            'name' => 'required|string',
+            'description' => 'string',
+            'status' => 'required|bool'
+        ]);
+
         try {
             $data = $request->all();
 
-            $validate = $this->validate->update($data);
+            $this->cells->update($data, $idCell);
+            $this->response["status"] = "success";
+            $this->response["message"] = "Cell updated succesfully";
+            Log::info('Cell updated succesfully by: User ' . Auth::user()->id);
 
-            if($validate["validated"]){
-                $this->cells->update($data, $id_cell);
-                $this->response["status"] = "success";
-                $this->response["message"] = "Cell inserted succesfully";
-                Log::info('Cell updated succesfully by: User ' . Auth::user()->id);
-            }else{
-                $this->response["status"] = "error";
-                $this->response["message"] = $validate["message"];
-            }
             return response()->json($this->response);
         } catch (\Exception $e) {
             Log::critical('Cell update Error: ' . $e->getMessage());
@@ -164,23 +157,18 @@ class CellsController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function delete($id_cell)
+    public function delete($idCell)
     {
         try {
-            $validate = $this->validate->delete($id_cell);
+            DB::beginTransaction();
 
-            if($validate["validated"]){
-                DB::beginTransaction();
-                $this->cells->deleteCellUsers($id_cell);
-                $this->cells->delete($id_cell);
-                $this->response["status"] = "success";
-                $this->response["message"] = "Cell succesfully deleted";
-                Log::info('Cell deleted by: User ' . Auth::user()->id);
-                DB::commit();
-            }else{
-                $this->response["status"] = "error";
-                $this->response["message"] = $validate["message"];
-            }
+            $this->cells->deleteCellUsers($idCell);
+            $this->cells->delete($idCell);
+            $this->response["status"] = "success";
+            $this->response["message"] = "Cell succesfully deleted";
+            
+            Log::info('Cell deleted by: User ' . Auth::user()->id);
+            DB::commit();
             return response()->json($this->response);
         } catch (\Exception $e) {
             DB::rollback();
@@ -188,7 +176,6 @@ class CellsController extends Controller
 
             $this->response["message"] = "Something went wrong with the delete of the cell";
             $this->response["status"] = "error";
-
             return response()->json($this->response);
         }
     }

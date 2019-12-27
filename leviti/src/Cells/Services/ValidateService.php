@@ -53,7 +53,7 @@ class ValidateService
             $this->message["name"] = "The name field needs to be string";
         }
 
-        if (!v::boolType()->validate($cellData["staus"])) {
+        if (!v::boolType()->validate($cellData["status"])) {
             $this->message["name"] = "The status field needs to be boolean";
         }
 

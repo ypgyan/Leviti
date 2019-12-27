@@ -45,9 +45,9 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
     $router->group(['prefix' => 'cells'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Cells\Controllers\CellsController@index', 'name' => 'user.index']);
         $router->post('/', ['uses' => '\Src\Cells\Controllers\CellsController@store', 'name' => 'user.store']);
-        $router->get('/{id_cell}',['uses' => '\Src\Cells\Controllers\CellsController@show', 'name' => 'user.show']);
-        $router->put('/{id_cell}',['uses' => '\Src\Cells\Controllers\CellsController@update', 'name' => 'user.update']);
-        $router->delete('/{id_cell}',['uses' => '\Src\Cells\Controllers\CellsController@delete', 'name' => 'user.delete']);
+        $router->get('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@show', 'name' => 'user.show']);
+        $router->post('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@update', 'name' => 'user.update']);
+        $router->delete('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@delete', 'name' => 'user.delete']);
     });
 
 });
