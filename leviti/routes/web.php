@@ -27,27 +27,30 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
      * Rotas para Usuários
      */
     $router->group(['prefix' => 'users'], function () use ($router) {
-        $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@users', 'name' => 'user.index']);
-        $router->post('/', ['uses' => '\Src\Users\Controllers\UsersController@store', 'name' => 'user.store']);
+        $router->get('/', ['uses' => '\Src\Users\Controllers\UsersController@index', 'name' => 'users.index']);
+        $router->post('/', ['uses' => '\Src\Users\Controllers\UsersController@store', 'name' => 'users.store']);
+        $router->get('/{idUser}', ['uses' => '\Src\Users\Controllers\UsersController@show', 'name' => 'users.show']);
+        $router->post('/{idUser}',['uses' => '\Src\Users\Controllers\UsersController@update', 'name' => 'users.update']);
+        $router->delete('/{idUser}',['uses' => '\Src\Users\Controllers\UsersController@delete', 'name' => 'users.delete']);
     });
 
     /**
      * Rotas para ministérios
      */
     $router->group(['prefix' => 'ministries'], function () use ($router) {
-        $router->get('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@index', 'name' => 'user.index']);
-        $router->post('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@store', 'name' => 'user.store']);
+        $router->get('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@index', 'name' => 'ministries.index']);
+        $router->post('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@store', 'name' => 'ministries.store']);
     });
 
     /**
      * Rotas para células
      */
     $router->group(['prefix' => 'cells'], function () use ($router) {
-        $router->get('/', ['uses' => '\Src\Cells\Controllers\CellsController@index', 'name' => 'user.index']);
-        $router->post('/', ['uses' => '\Src\Cells\Controllers\CellsController@store', 'name' => 'user.store']);
-        $router->get('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@show', 'name' => 'user.show']);
-        $router->post('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@update', 'name' => 'user.update']);
-        $router->delete('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@delete', 'name' => 'user.delete']);
+        $router->get('/', ['uses' => '\Src\Cells\Controllers\CellsController@index', 'name' => 'cells.index']);
+        $router->post('/', ['uses' => '\Src\Cells\Controllers\CellsController@store', 'name' => 'cells.store']);
+        $router->get('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@show', 'name' => 'cells.show']);
+        $router->post('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@update', 'name' => 'cells.update']);
+        $router->delete('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@delete', 'name' => 'cells.delete']);
     });
 
 });

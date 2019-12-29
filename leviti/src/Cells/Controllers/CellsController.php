@@ -154,10 +154,10 @@ class CellsController extends Controller
     /**
      * Deleta a célula desejada
      * 
-     * @param Request $request
+     * @param int $idCell
      * @return Response
      */
-    public function delete($idCell)
+    public function delete(int $idCell)
     {
         try {
             DB::beginTransaction();

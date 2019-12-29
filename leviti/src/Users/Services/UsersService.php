@@ -33,56 +33,6 @@ class UsersService
     }
 
     /**
-     * Verifica os dados recebidos
-     * 
-     * @param Array userData
-     * @return Array[bool,string]
-     */
-    public function validate(Array $userData)
-    {
-        if (!v::stringType()->validate($userData["name"])) {
-            $this->message["name"] = "The name field needs to be string";
-        }
-
-        if (!v::stringType()->validate($userData["last_name"])) {
-            $this->message["last_name"] = "The last name field needs to be string";
-        }
-
-        if (!v::cpf()->validate($userData["cpf"]) || $this->verificaCPF($userData["cpf"])) {
-            $this->message["cpf"] = "This CPF is invalid or has already been taken";
-        }
-
-        if (!v::stringType()->validate($userData["cellphone"])) {
-            $this->message["cellphone"] = "The cellphone field needs to be string";
-        }
-
-        if (!v::email()->validate($userData["email"])) {
-            $this->message["email"] = "Email is not valid";
-        }
-
-        if ((!v::stringType()->validate($userData["type"])) && ($userData["type"] == "ADMIN" || $userData["type"] == "MEMBER")) {
-            $this->message["type"] = "The type field needs to be string and ADMIN or MEMBER";
-        }
-
-        if (!v::boolVal()->validate($userData["status"])) {
-            $this->message["status"] = "The status field needs to be bool";
-        }
-
-        if (empty($this->message)) {
-            return [
-                "validated" => 1,
-                "message" => $this->message
-            ];
-        }else{
-            return [
-                "validated" => 0,
-                "message" => $this->message
-            ];
-        }
-        
-    }
-
-    /**
      * Insere o usuário na base
      *
      * @param Array $userData
@@ -108,7 +58,7 @@ class UsersService
      * @param void
      * @return Array
      */
-    public function getUsers()
+    public function getAll()
     {
         $users = DB::select("
             SELECT 
@@ -125,8 +75,77 @@ class UsersService
                 U.created_at,
                 U.updated_at
             FROM users U
+            WHERE
+                U.status = 1
         ");
 
         return $users;
+    }
+
+    /**
+     * Retorna o usuário
+     * @param int $idUser
+     * @return Array
+     */
+    public function get(int $idUser)
+    {
+        $users = DB::select("
+            SELECT 
+                U.id,
+                U.name,
+                U.last_name,
+                CONCAT(U.name,' ', U.last_name) AS full_name,
+                U.cpf,
+                U.cellphone,
+                U.email,
+                U.type,
+                U.active,
+                U.status,
+                U.created_at,
+                U.updated_at
+            FROM users U
+            WHERE
+                id = ?
+        ",[$idUser]);
+
+        return $users;
+    }
+
+    /**
+     * Atualizado os dados do usuário
+     * 
+     * @param Array $userData
+     * @param int $idUser
+     * @return void
+     */
+    public function update(Array $userData, int $idUser)
+    {
+        $user = User::where('id',$idUser)->first();
+
+        $user->name = $userData["name"];
+        $user->last_name = $userData["last_name"];
+        $user->cpf = $userData["cpf"];
+        $user->cellphone = $userData["cellphone"];
+        $user->email = $userData["email"];
+        $user->type = $userData["type"];
+        $user->active = $userData["active"];
+        $user->status = $userData["status"];
+
+        $user->save();
+    }
+
+    /**
+     * Deleta o usuário
+     * 
+     * @param int $idUser
+     * @return void
+     */
+    public function delete(int $idUser)
+    {
+        $user = User::where('id',$idUser)->first();
+
+        $user->status = 0;
+
+        $user->save();
     }
 }
