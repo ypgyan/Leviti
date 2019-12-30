@@ -78,7 +78,6 @@ class CellsController extends Controller
         try {
             $data = $request->all();
 
-            $validate = $this->validate->store($data);
             $this->cells->insert($data);
             $this->response["status"] = "success";
             $this->response["message"] = "Cell inserted succesfully";

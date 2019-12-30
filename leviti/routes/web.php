@@ -40,6 +40,9 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
     $router->group(['prefix' => 'ministries'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@index', 'name' => 'ministries.index']);
         $router->post('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@store', 'name' => 'ministries.store']);
+        $router->get('/{idMinitry}', ['uses' => '\Src\Ministries\Controllers\MinistriesController@show', 'name' => 'ministries.show']);
+        $router->post('/{idMinitry}',['uses' => '\Src\Ministries\Controllers\MinistriesController@update', 'name' => 'ministries.update']);
+        $router->delete('/{idMinitry}',['uses' => '\Src\Ministries\Controllers\MinistriesController@delete', 'name' => 'ministries.delete']);
     });
 
     /**

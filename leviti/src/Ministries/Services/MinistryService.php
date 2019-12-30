@@ -74,4 +74,72 @@ class MinistryService
 
         $ministry->save();
     }
+
+    /**
+     * Retorna todos os ministérios cadastrados
+     *
+     * @param int $idMinistry
+     * @return Array
+     */
+    public function get($idMinistry)
+    {
+        $ministries = DB::select("
+            SELECT
+                M.*
+            FROM ministries M
+            WHERE
+                M.id = ? AND M.status = 1
+        ",[$idMinistry]);
+
+        return $ministries;
+    }
+
+    /**
+     * Atualiza o ministério no Banco
+     * 
+     * @param Array $ministryData
+     * @param int $idMinistry
+     * @return void
+     */
+    public function update(Array $ministryData, int $idMinistry)
+    {
+        $ministry = Ministry::where('id',$idMinistry)->first();
+
+        $ministry->name = $ministryData["name"];
+        $ministry->description = $ministryData["description"];
+        $ministry->status = $ministryData["status"];
+
+        $ministry->save();
+    }
+
+    /**
+     * Deleta os usuários vinculados a célula
+     * 
+     * @param int $idMinistry
+     * @return void
+     */
+    public function deleteMinistriesUsers($idMinistry)
+    {
+        DB::delete('
+        UPDATE user_ministries SET
+            status = 0
+        WHERE
+            id_ministry = ?
+        ', [$idMinistry]);
+    }
+
+    /**
+     * Deleta a célula
+     * 
+     * @param int $idMinistry
+     * @return void
+     */
+    public function delete($idMinistry)
+    {
+        DB::delete('
+        UPDATE ministries SET
+            status = 0
+        WHERE id = ?
+        ', [$idMinistry]);
+    }
 }
