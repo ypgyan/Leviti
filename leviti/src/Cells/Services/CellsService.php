@@ -10,7 +10,7 @@ use Src\Cells\Models\Cell;
 class CellsService
 {
     /**
-     * Mensagem de retorno 
+     * Mensagem de retorno
      *
      * @var string
      */
@@ -56,7 +56,7 @@ class CellsService
 
     /**
      * Insere o ministério no Banco
-     * 
+     *
      * @param Array $cellData
      * @return void
      */
@@ -73,7 +73,7 @@ class CellsService
 
     /**
      * Atualiza os dados da célula no banco
-     * 
+     *
      * @param Array $cellData
      * @param int $id_cell
      * @return void
@@ -91,7 +91,7 @@ class CellsService
 
     /**
      * Deleta os usuários vinculados a célula
-     * 
+     *
      * @param int $id_cell
      * @return void
      */
@@ -107,16 +107,32 @@ class CellsService
 
     /**
      * Deleta a célula
-     * 
-     * @param int $id_cell
+     *
+     * @param int $idCell
      * @return void
      */
-    public function delete($id_cell)
+    public function delete($idCell)
     {
-        DB::delete('
-        UPDATE cells SET
-            status = 0
-        WHERE id = ?
-        ', [$id_cell]);
+        try {
+            Cell::where('id', $idCell)->delete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    public function insertCellmembers(Array $members)
+    {
+        try {
+            dd($members);
+            foreach ($members as $member) {
+                DB::insert('
+                    INSERT INTO user_cells
+
+                ', [1, 'Dayle']);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

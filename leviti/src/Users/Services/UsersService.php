@@ -6,10 +6,10 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Respect\Validation\Validator as v;
 
-class UsersService 
+class UsersService
 {
     /**
-     * Mensagem de retorno 
+     * Mensagem de retorno
      *
      * @var string
      */
@@ -17,7 +17,7 @@ class UsersService
 
     /**
      * Verifica se o CPF é valido
-     * 
+     *
      * @param string $cpf
      * @return bool
      */
@@ -40,17 +40,21 @@ class UsersService
      */
     public function insert(Array $userData)
     {
-        $user = new User();
+        try {
+            $user = new User();
 
-        $user->name = $userData["name"];
-        $user->last_name = $userData["last_name"];
-        $user->cpf = $userData["cpf"];
-        $user->cellphone = $userData["cellphone"];
-        $user->email = $userData["email"];
-        $user->type = strtoupper($userData["type"]);
-        $user->status = $userData["status"];
+            $user->name = $userData["name"];
+            $user->last_name = $userData["last_name"];
+            $user->cpf = $userData["cpf"];
+            $user->cellphone = $userData["cellphone"];
+            $user->email = $userData["email"];
+            $user->type = strtoupper($userData["type"]);
+            $user->status = $userData["status"];
 
-        $user->save();
+            $user->save();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -60,26 +64,13 @@ class UsersService
      */
     public function getAll()
     {
-        $users = DB::select("
-            SELECT 
-                U.id,
-                U.name,
-                U.last_name,
-                CONCAT(U.name,' ', U.last_name) AS full_name,
-                U.cpf,
-                U.cellphone,
-                U.email,
-                U.type,
-                U.active,
-                U.status,
-                U.created_at,
-                U.updated_at
-            FROM users U
-            WHERE
-                U.status = 1
-        ");
+        try {
+            $users = User::get();
 
-        return $users;
+            return $users;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -89,63 +80,72 @@ class UsersService
      */
     public function get(int $idUser)
     {
-        $users = DB::select("
-            SELECT 
-                U.id,
-                U.name,
-                U.last_name,
-                CONCAT(U.name,' ', U.last_name) AS full_name,
-                U.cpf,
-                U.cellphone,
-                U.email,
-                U.type,
-                U.active,
-                U.status,
-                U.created_at,
-                U.updated_at
-            FROM users U
-            WHERE
-                id = ?
-        ",[$idUser]);
+        try {
+            $users = DB::select("
+                SELECT
+                    U.id,
+                    U.name,
+                    U.last_name,
+                    CONCAT(U.name,' ', U.last_name) AS full_name,
+                    U.cpf,
+                    U.cellphone,
+                    U.email,
+                    U.type,
+                    U.active,
+                    U.status,
+                    U.created_at,
+                    U.updated_at
+                FROM users U
+                WHERE
+                    id = ?
+            ",[$idUser]);
 
-        return $users;
+            return $users;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Atualizado os dados do usuário
-     * 
+     *
      * @param Array $userData
      * @param int $idUser
      * @return void
      */
     public function update(Array $userData, int $idUser)
     {
-        $user = User::where('id',$idUser)->first();
+        try {
+            $user = User::where('id',$idUser)->first();
 
-        $user->name = $userData["name"];
-        $user->last_name = $userData["last_name"];
-        $user->cpf = $userData["cpf"];
-        $user->cellphone = $userData["cellphone"];
-        $user->email = $userData["email"];
-        $user->type = $userData["type"];
-        $user->active = $userData["active"];
-        $user->status = $userData["status"];
+            $user->name = $userData["name"];
+            $user->last_name = $userData["last_name"];
+            $user->cpf = $userData["cpf"];
+            $user->cellphone = $userData["cellphone"];
+            $user->email = $userData["email"];
+            $user->type = $userData["type"];
+            $user->active = $userData["active"];
+            $user->status = $userData["status"];
 
-        $user->save();
+            $user->save();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Deleta o usuário
-     * 
+     *
      * @param int $idUser
      * @return void
      */
     public function delete(int $idUser)
     {
-        $user = User::where('id',$idUser)->first();
-
-        $user->status = 0;
-
-        $user->save();
+        try {
+            $user = User::where('id',$idUser)->delete();
+        } catch (\Throwable $th) {
+            Log::critical('Failed to delete user');
+            throw $th;
+        }
     }
 }

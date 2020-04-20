@@ -44,9 +44,9 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
     $router->group(['prefix' => 'ministries'], function () use ($router) {
         $router->get('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@index', 'name' => 'ministries.index']);
         $router->post('/', ['uses' => '\Src\Ministries\Controllers\MinistriesController@store', 'name' => 'ministries.store']);
-        $router->get('/{idMinitry}', ['uses' => '\Src\Ministries\Controllers\MinistriesController@show', 'name' => 'ministries.show']);
-        $router->patch('/{idMinitry}',['uses' => '\Src\Ministries\Controllers\MinistriesController@update', 'name' => 'ministries.update']);
-        $router->delete('/{idMinitry}',['uses' => '\Src\Ministries\Controllers\MinistriesController@delete', 'name' => 'ministries.delete']);
+        $router->get('/{idMinistry}', ['uses' => '\Src\Ministries\Controllers\MinistriesController@show', 'name' => 'ministries.show']);
+        $router->patch('/{idMinistry}',['uses' => '\Src\Ministries\Controllers\MinistriesController@update', 'name' => 'ministries.update']);
+        $router->delete('/{idMinistry}',['uses' => '\Src\Ministries\Controllers\MinistriesController@delete', 'name' => 'ministries.delete']);
     });
 
     /**
@@ -58,6 +58,7 @@ $router->group(['prefix' => 'api', 'middleware' => ['auth']], function () use ($
         $router->get('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@show', 'name' => 'cells.show']);
         $router->patch('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@update', 'name' => 'cells.update']);
         $router->delete('/{idCell}',['uses' => '\Src\Cells\Controllers\CellsController@delete', 'name' => 'cells.delete']);
+        $router->post('/{idCell}/members', ['uses' => '\Src\Cells\Controllers\CellsController@storeMembers', 'name' => 'cells.members.store']);
+        $router->get('/{idCell}/members', ['uses' => '\Src\Cells\Controllers\CellsController@showMembers', 'name' => 'cells.members.show']);
     });
-
 });

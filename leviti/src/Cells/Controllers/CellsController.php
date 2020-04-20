@@ -25,7 +25,7 @@ class CellsController extends Controller
 
     /**
      * Serviço de células
-     * 
+     *
      * @var CellsService
      */
     private $cells;
@@ -42,7 +42,7 @@ class CellsController extends Controller
 
     /**
      * Retorna todos as células cadastradas
-     * 
+     *
      * @param void
      * @return Json
      */
@@ -64,7 +64,7 @@ class CellsController extends Controller
 
     /**
      * Salva a célula
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -82,7 +82,7 @@ class CellsController extends Controller
             $this->response["status"] = "success";
             $this->response["message"] = "Cell inserted succesfully";
             Log::info('New Cell created by: User ' . Auth::user()->id);
-            
+
             return response()->json($this->response);
         } catch (\Exception $e) {
             Log::critical('Cell store Error: ' . $e->getMessage());
@@ -96,7 +96,7 @@ class CellsController extends Controller
 
     /**
      * Busca uma célula específica
-     * 
+     *
      * @param void
      * @return Json
      */
@@ -118,7 +118,7 @@ class CellsController extends Controller
 
     /**
      * Atualiza os dados da célula
-     * 
+     *
      * @param int $idCell
      * @param Request $request
      * @return Response
@@ -152,7 +152,7 @@ class CellsController extends Controller
 
     /**
      * Deleta a célula desejada
-     * 
+     *
      * @param int $idCell
      * @return Response
      */
@@ -165,7 +165,7 @@ class CellsController extends Controller
             $this->cells->delete($idCell);
             $this->response["status"] = "success";
             $this->response["message"] = "Cell succesfully deleted";
-            
+
             Log::info('Cell deleted by: User ' . Auth::user()->id);
             DB::commit();
             return response()->json($this->response);
@@ -177,5 +177,30 @@ class CellsController extends Controller
             $this->response["status"] = "error";
             return response()->json($this->response);
         }
+    }
+
+    /**
+     * Insert the cell members
+     *
+     * @param Reques $request
+     * @param integer $idCell
+     * @return Response
+     */
+    public function storeMembers(Reques $request, int $idCell)
+    {
+        $validatedData = $this->validate($request, [
+            'users' => 'required|array'
+        ]);
+
+        try {
+            $this->cells->insertCellMembers($validatedData);
+        } catch (Exception $th) {
+            //throw $th;
+        }
+    }
+
+    public function showMembers(Type $var = null)
+    {
+        # code...
     }
 }

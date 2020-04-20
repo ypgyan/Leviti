@@ -24,7 +24,7 @@ class MinistriesController extends Controller
 
     /**
      * Serviço de usuários
-     * 
+     *
      * @var MinistryService
      */
     private $ministryService;
@@ -41,7 +41,7 @@ class MinistriesController extends Controller
 
     /**
      * Retorna todos os ministérios cadastrados
-     * 
+     *
      * @param void
      * @return Json
      */
@@ -53,7 +53,7 @@ class MinistriesController extends Controller
             $this->response["status"] = "success";
             $this->response["message"] = "Ministérios retornados com sucesso";
             $this->response["ministries"] = $ministries;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Falha ao busca os ministérios');
             $this->response["status"] = "error";
             $this->response["message"] = "Falha ao buscar os ministérios";
@@ -63,7 +63,7 @@ class MinistriesController extends Controller
 
     /**
      * Salva o ministério
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -76,14 +76,14 @@ class MinistriesController extends Controller
         try {
             $data = $request->all();
 
-        
+
             $this->ministryService->insert($data);
             $this->response["status"] = "success";
             $this->response["message"] = "Ministry inserted succesfully";
             Log::info('New Ministry created by: User ' . Auth::user()->id);
-            
+
             return response()->json($this->response);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::critical('Ministry store Error: ' . $e->getMessage());
 
             $this->response["message"] = "Something went wrong with the insert of the ministry";
@@ -95,7 +95,7 @@ class MinistriesController extends Controller
 
     /**
      * Retorna um ministério específico
-     * 
+     *
      * @param int $idMinistry
      * @return Json
      */
@@ -107,7 +107,7 @@ class MinistriesController extends Controller
             $this->response["status"] = "success";
             $this->response["message"] = "Ministérios retornados com sucesso";
             $this->response["ministry"] = $ministry;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Falha ao busca os ministérios');
             $this->response["status"] = "error";
             $this->response["message"] = "Falha ao buscar os ministérios";
@@ -117,7 +117,7 @@ class MinistriesController extends Controller
 
     /**
      * Atualiza as informações de um ministério
-     * 
+     *
      * @param Request $request
      * @param int $idMinistry
      * @return Response
@@ -133,14 +133,14 @@ class MinistriesController extends Controller
         try {
             $data = $request->all();
 
-        
+
             $this->ministryService->update($data, $idMinistry);
             $this->response["status"] = "success";
             $this->response["message"] = "Ministry updated succesfully";
             Log::info('Ministry updated by: User ' . Auth::user()->id);
-            
+
             return response()->json($this->response);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::critical('Ministry update Error: ' . $e->getMessage());
 
             $this->response["message"] = "Something went wrong with the update of the ministry";
@@ -152,7 +152,7 @@ class MinistriesController extends Controller
 
     /**
      * Deleta o ministério desejado
-     * 
+     *
      * @param int $idMinistries
      * @return Response
      */
@@ -165,11 +165,11 @@ class MinistriesController extends Controller
             $this->ministryService->delete($idMinistries);
             $this->response["status"] = "success";
             $this->response["message"] = "Ministry succesfully deleted";
-            
+
             Log::info('Ministry deleted by: User ' . Auth::user()->id);
             DB::commit();
             return response()->json($this->response);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             Log::critical('Ministry delete Error: ' . $e->getMessage());
 

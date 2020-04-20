@@ -10,7 +10,7 @@ use Src\Ministries\Models\Ministry;
 class MinistryService
 {
     /**
-     * Mensagem de retorno 
+     * Mensagem de retorno
      *
      * @var string
      */
@@ -24,18 +24,14 @@ class MinistryService
      */
     public function getAll()
     {
-        $ministries = DB::select("
-            SELECT
-                M.*
-            FROM ministries M
-        ");
+        $ministries = Ministry::get();
 
         return $ministries;
     }
 
     /**
      * Verifica os dados recebidos
-     * 
+     *
      * @param Array $ministryData
      * @return Array[bool,string]
      */
@@ -60,7 +56,7 @@ class MinistryService
 
     /**
      * Insere o ministério no Banco
-     * 
+     *
      * @param Array $ministryData
      * @return void
      */
@@ -76,27 +72,21 @@ class MinistryService
     }
 
     /**
-     * Retorna todos os ministérios cadastrados
+     * Retorna o ministério Específico
      *
      * @param int $idMinistry
      * @return Array
      */
     public function get($idMinistry)
     {
-        $ministries = DB::select("
-            SELECT
-                M.*
-            FROM ministries M
-            WHERE
-                M.id = ? AND M.status = 1
-        ",[$idMinistry]);
+        $ministry = Ministry::where('id', $idMinistry)->first();
 
-        return $ministries;
+        return $ministry;
     }
 
     /**
      * Atualiza o ministério no Banco
-     * 
+     *
      * @param Array $ministryData
      * @param int $idMinistry
      * @return void
@@ -114,13 +104,13 @@ class MinistryService
 
     /**
      * Deleta os usuários vinculados a célula
-     * 
+     *
      * @param int $idMinistry
      * @return void
      */
     public function deleteMinistriesUsers($idMinistry)
     {
-        DB::delete('
+        DB::update('
         UPDATE user_ministries SET
             status = 0
         WHERE
@@ -130,16 +120,12 @@ class MinistryService
 
     /**
      * Deleta a célula
-     * 
+     *
      * @param int $idMinistry
      * @return void
      */
     public function delete($idMinistry)
     {
-        DB::delete('
-        UPDATE ministries SET
-            status = 0
-        WHERE id = ?
-        ', [$idMinistry]);
+        Ministry::where('id', $idMinistry)->delete();
     }
 }
