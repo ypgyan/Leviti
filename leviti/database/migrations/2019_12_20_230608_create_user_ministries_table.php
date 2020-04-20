@@ -21,6 +21,7 @@ class CreateUserMinistriesTable extends Migration
             $table->boolean('member');
             $table->boolean('status');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_user')->references('id')->on('users');
             $table->foreign('id_ministry')->references('id')->on('ministries');

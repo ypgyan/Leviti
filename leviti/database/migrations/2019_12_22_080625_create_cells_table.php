@@ -20,6 +20,7 @@ class CreateCellsTable extends Migration
             $table->string('description')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_user')->references('id')->on('users');
         });
