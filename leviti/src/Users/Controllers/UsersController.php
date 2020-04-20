@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Src\Users\Services\UsersService;
+use Exception;
 
 class UsersController extends Controller
 {
@@ -22,7 +23,7 @@ class UsersController extends Controller
 
     /**
      * Serviço de usuários
-     * 
+     *
      * @var UsersService
      */
     private $usersService;
@@ -39,7 +40,7 @@ class UsersController extends Controller
 
     /**
      * Index de Users
-     * 
+     *
      * @param void
      * @return Json
      */
@@ -50,7 +51,7 @@ class UsersController extends Controller
             $this->response["users"] = $users;
             $this->response["message"] = "Usuários retornados com sucesso";
             $this->response["status"] = "success";
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::critical('Users store Error: ' . $e->getMessage());
             $this->response["message"] = "Alguma coisa deu errado ao tentar buscar os usuários";
             $this->response["status"] = "error";
@@ -60,7 +61,7 @@ class UsersController extends Controller
 
     /**
      * Save the users
-     * 
+     *
      * @param void
      * @return Json
      */
@@ -81,9 +82,9 @@ class UsersController extends Controller
             $this->response["status"] = "success";
             $this->response["message"] = "User inserted succesfully";
             Log::info('New user created by: User ' . Auth::user()->id);
-            
+
             return response()->json($this->response);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::critical('Users store Error: ' . $e->getMessage());
 
             $this->response["message"] = "Something went wrong";
@@ -95,7 +96,7 @@ class UsersController extends Controller
 
     /**
      * Mostra um usuário específico
-     * 
+     *
      * @param int $idUser
      * @return Json
      */
@@ -106,7 +107,7 @@ class UsersController extends Controller
             $this->response["users"] = $users;
             $this->response["message"] = "Usuários retornado com sucesso";
             $this->response["status"] = "success";
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::critical('Users store Error: ' . $e->getMessage());
             $this->response["message"] = "Alguma coisa deu errado ao tentar buscar o usuário";
             $this->response["status"] = "error";
@@ -116,7 +117,7 @@ class UsersController extends Controller
 
     /**
      * Atualiza os dados do usuário desejado
-     * 
+     *
      * @param void
      * @return Json
      */
@@ -139,9 +140,9 @@ class UsersController extends Controller
             $this->response["status"] = "success";
             $this->response["message"] = "User updated succesfully";
             Log::info('User updated succesfully');
-            
+
             return response()->json($this->response);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::critical('User update Error: ' . $e->getMessage());
 
             $this->response["message"] = "Something went wrong";
@@ -153,7 +154,7 @@ class UsersController extends Controller
 
     /**
      * Deleta o usuário desejada
-     * 
+     *
      * @param int $idUser
      * @return Response
      */
@@ -163,10 +164,10 @@ class UsersController extends Controller
             $this->usersService->delete($idUser);
             $this->response["status"] = "success";
             $this->response["message"] = "User succesfully deleted";
-            
+
             Log::info('User disabled');
             return response()->json($this->response);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::critical('User disabled Error:');
 
             $this->response["message"] = "Something went wrong with the delete of the user";
